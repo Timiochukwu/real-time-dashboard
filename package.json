@@ -8,7 +8,7 @@
       "dev:backend": "cd backend && npm run dev",
       "build:frontend": "cd frontend && npm run build",
       "start:frontend": "cd frontend && npm start",
-      "start:backend": "cd backend && npm start && tsx src/scripts/seedData.ts",
+      "start:backend": "cd backend && concurrently \"npm start\" \"tsx src/scripts/seedData.ts\"",
       "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
     },
     "workspaces": [

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { Eye, EyeOff, Lock, Mail, Shield, Smartphone } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, Smartphone } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -43,9 +43,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Logo and Header */}
         <div className="text-center">
-          <div className="mx-auto h-20 w-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-            <Shield className="h-10 w-10 text-white" />
-          </div>
+          
           <h2 className="text-4xl font-bold text-white mb-2">
             Welcome Back
           </h2>
@@ -187,13 +185,6 @@ export default function LoginPage() {
               </p>
             </div>
           </form>
-        </div>
-
-        {/* Security Badge */}
-        <div className="text-center">
-          <div className="inline-flex items-center space-x-2 text-slate-400 text-sm">
-            <Shield className="h-4 w-4" />
-          </div>
         </div>
       </div>
     </div>
