@@ -147,6 +147,49 @@ realtime-dashboard/
 
 API documentation will be available in future updates. For now, please refer to the source code in the `backend/src/routes` directory for endpoint details.
 
+## 🚀 Deployment
+
+### Frontend Deployment (Vercel)
+
+1. Push your code to GitHub
+2. Go to [Vercel](https://vercel.com)
+3. Import your repository
+4. Configure environment variables:
+   - `NEXT_PUBLIC_API_URL`: Your Render backend URL
+   - `NEXT_PUBLIC_SOCKET_URL`: Your Render backend URL
+5. Deploy
+
+### Backend Deployment (Render)
+
+1. Go to [Render](https://render.com)
+2. Create a new Web Service
+3. Connect your GitHub repository
+4. Configure the service:
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npm start`
+5. Add environment variables:
+   - `PORT`: 10000 (Render's default)
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `JWT_SECRET`: Your JWT secret
+   - `REDIS_URL`: Your Redis connection string
+6. Deploy
+
+### Environment Variables
+
+#### Frontend (Vercel)
+```
+NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
+NEXT_PUBLIC_SOCKET_URL=https://your-backend-url.onrender.com
+```
+
+#### Backend (Render)
+```
+PORT=10000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+REDIS_URL=your_redis_url
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
