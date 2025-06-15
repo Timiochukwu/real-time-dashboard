@@ -1,0 +1,21 @@
+
+{
+    "name": "realtime-dashboard",
+    "version": "1.0.0",
+    "description": "Fullstack Dashboard with Real-Time Transactions",
+    "scripts": {
+      "dev:frontend": "cd frontend && npm run dev",
+      "dev:backend": "cd backend && npm run dev",
+      "build:frontend": "cd frontend && npm run build",
+      "start:frontend": "cd frontend && npm start",
+      "start:backend": "cd backend && npm start",
+      "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+    },
+    "workspaces": [
+      "frontend",
+      "backend"
+    ],
+    "devDependencies": {
+      "concurrently": "^8.2.2"
+    }
+  }

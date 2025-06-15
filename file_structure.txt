@@ -1,0 +1,46 @@
+.
+├── backend
+│   ├── package.json
+│   └── src
+│       ├── controllers
+│       ├── middleware
+│       │   └── auth.ts
+│       ├── models
+│       │   ├── Transaction.ts
+│       │   └── User.ts
+│       ├── routes
+│       │   ├── auth.ts
+│       │   └── transactions.ts
+│       ├── scripts
+│       │   └── seedData.ts
+│       ├── server.ts
+│       └── services
+│           └── transactionService.ts
+├── file_structure.txt
+├── frontend
+│   ├── next.config.js
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── src
+│   │   ├── app
+│   │   │   ├── dashboard
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── components
+│   │   │   └── ui
+│   │   │       └── Navbar.tsx
+│   │   ├── lib
+│   │   │   ├── api.ts
+│   │   │   ├── socket.ts
+│   │   │   └── utils.ts
+│   │   └── types
+│   │       └── index.ts
+│   ├── tailwind.config.js
+│   └── tsconfig.json
+├── package-lock.json
+└── package.json
+
+18 directories, 26 files

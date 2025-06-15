@@ -1,0 +1,33 @@
+.
+├── file_structure.txt
+├── next-env.d.ts
+├── next.config.js
+├── package.json
+├── postcss.config.js
+├── src
+│   ├── app
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── SummaryCards.tsx
+│   │   ├── TransactionTable.tsx
+│   │   └── ui
+│   │       └── Navbar.tsx
+│   ├── context
+│   │   └── AuthContext.tsx
+│   ├── lib
+│   │   ├── api.ts
+│   │   ├── socket.ts
+│   │   └── utils.ts
+│   ├── styles
+│   │   └── globals.css
+│   └── types
+│       └── index.ts
+├── tailwind.config.js
+└── tsconfig.json
+
+11 directories, 20 files
