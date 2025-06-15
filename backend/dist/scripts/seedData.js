@@ -74,7 +74,9 @@ const seedData = async () => {
         // Create transactions for each user
         const allTransactions = [];
         for (const user of createdUsers) {
-            const userTransactions = generateTransactions(user._id.toString(), 50);
+            // Ensure user._id is treated as a string or ObjectId
+            const userId = user._id ? user._id.toString() : '';
+            const userTransactions = generateTransactions(userId, 50);
             allTransactions.push(...userTransactions);
         }
         await Transaction.insertMany(allTransactions);

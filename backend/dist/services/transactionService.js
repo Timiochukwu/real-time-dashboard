@@ -1,4 +1,7 @@
-import { Transaction, User } from '../models';
+// services/transactionService.ts
+import mongoose from 'mongoose';
+import { Transaction, User } from '../models/index.js';
+import { redisClient } from '../server.js';
 const categories = ['transfer', 'payment', 'deposit', 'withdrawal', 'refund', 'fee'];
 const descriptions = [
     'Online purchase payment',
@@ -36,5 +39,107 @@ export const generateMockTransaction = async () => {
     catch (error) {
         console.error('Error generating mock transaction:', error);
         throw error;
+    }
+};
+export const transactionService = {
+    async getTransactions({ userId, page = 1, limit = 20, sortBy = 'createdAt', sortOrder = 'desc', type, status, category, search }) {
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        const skip = (pageNum - 1) * limitNum;
+        const filter = { userId };
+        if (type)
+            filter.type = type;
+        if (status)
+            filter.status = status;
+        if (category)
+            filter.category = category;
+        if (search) {
+            filter.$or = [
+                { description: { $regex: search, $options: 'i' } },
+                { reference: { $regex: search, $options: 'i' } }
+            ];
+        }
+        const cacheKey = `transactions:${userId}:${JSON.stringify({ filter, skip, limitNum, sortBy, sortOrder })}`;
+        const cachedResult = await redisClient.get(cacheKey);
+        if (cachedResult) {
+            return JSON.parse(cachedResult);
+        }
+        const sortObj = {};
+        sortObj[sortBy] = sortOrder === 'desc' ? -1 : 1;
+        const [transactions, total] = await Promise.all([
+            Transaction.find(filter)
+                .sort(sortObj)
+                .skip(skip)
+                .limit(limitNum)
+                .populate('userId', 'name email')
+                .lean(),
+            Transaction.countDocuments(filter)
+        ]);
+        const result = {
+            transactions,
+            pagination: {
+                current: pageNum,
+                pages: Math.ceil(total / limitNum),
+                total,
+                hasNext: pageNum < Math.ceil(total / limitNum),
+                hasPrev: pageNum > 1,
+                limit: limitNum
+            }
+        };
+        await redisClient.setex(cacheKey, 300, JSON.stringify(result));
+        return result;
+    },
+    async getSummary(userId) {
+        const cacheKey = `dashboard:summary:${userId}`;
+        const cachedSummary = await redisClient.get(cacheKey);
+        if (cachedSummary) {
+            return JSON.parse(cachedSummary);
+        }
+        const [totalTransactions, completedTransactions, pendingTransactions, failedTransactions, totalCredits, totalDebits] = await Promise.all([
+            Transaction.countDocuments({ userId }),
+            Transaction.countDocuments({ userId, status: 'completed' }),
+            Transaction.countDocuments({ userId, status: 'pending' }),
+            Transaction.countDocuments({ userId, status: 'failed' }),
+            Transaction.aggregate([
+                { $match: { userId: new mongoose.Types.ObjectId(userId), type: 'credit', status: 'completed' } },
+                { $group: { _id: null, total: { $sum: '$amount' } } }
+            ]),
+            Transaction.aggregate([
+                { $match: { userId: new mongoose.Types.ObjectId(userId), type: 'debit', status: 'completed' } },
+                { $group: { _id: null, total: { $sum: '$amount' } } }
+            ])
+        ]);
+        const totalCreditAmount = totalCredits[0]?.total || 0;
+        const totalDebitAmount = totalDebits[0]?.total || 0;
+        const totalBalance = totalCreditAmount - totalDebitAmount;
+        // Create a formatter for USD currency
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        const summary = {
+            totalTransactions,
+            totalBalance: {
+                raw: totalBalance,
+                formatted: formatter.format(totalBalance)
+            },
+            totalCredits: {
+                raw: totalCreditAmount,
+                formatted: formatter.format(totalCreditAmount)
+            },
+            totalDebits: {
+                raw: totalDebitAmount,
+                formatted: formatter.format(totalDebitAmount)
+            },
+            transactionsByStatus: {
+                completed: completedTransactions,
+                pending: pendingTransactions,
+                failed: failedTransactions
+            }
+        };
+        await redisClient.setex(cacheKey, 120, JSON.stringify(summary));
+        return summary;
     }
 };

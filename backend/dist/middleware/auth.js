@@ -17,6 +17,7 @@ export const authenticateToken = (req, res, next) => {
             email: decoded.email,
             role: decoded.role
         };
+        req.userId = decoded.userId;
         next();
     }
     catch (error) {
