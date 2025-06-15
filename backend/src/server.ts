@@ -35,9 +35,22 @@ const redisClient = process.env.REDIS_URL
 
 // Middleware
 app.use(helmet());
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://real-time-dashboard-frontend-green.vercel.app',
+  'https://real-time-dashboard-frontend-2w6t.vercel.app'
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS error: ${origin} not allowed`));
+    }
+  },
+  credentials: true,
 }));
 
 // Rate limiting configuration
