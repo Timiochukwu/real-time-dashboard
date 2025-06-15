@@ -1,29 +1,52 @@
-# Realtime Dashboard
+# Real-time Dashboard
 
-A modern realtime dashboard application with a Node.js backend and React frontend, providing real-time data visualization and monitoring capabilities.
+A modern real-time dashboard application built with Next.js frontend and Node.js backend, featuring real-time data visualization, authentication, and interactive components.
 
 ## 🚀 Features
 
-- Real-time data updates
-- Interactive dashboard components
-- Responsive design
-- Secure authentication
-- Data visualization
-- API integration
+- Real-time data updates using Socket.IO
+- Interactive dashboard with data visualization
+- User authentication and authorization
+- Responsive design with Tailwind CSS
+- MongoDB database integration
+- Redis caching for improved performance
+- RESTful API architecture
+- TypeScript support for both frontend and backend
+
+## 🛠️ Tech Stack
+
+### Frontend
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Socket.IO Client
+- React Context for state management
+- Axios for API requests
+
+### Backend
+- Node.js with Express
+- TypeScript
+- MongoDB with Mongoose
+- Redis for caching
+- Socket.IO for real-time updates
+- JWT for authentication
+- Joi for request validation
 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
 - Node.js (v14 or higher)
 - npm (v6 or higher)
+- MongoDB
+- Redis
 - Git
 
 ## 🛠️ Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/realtime-dashboard.git
-cd realtime-dashboard
+git clone https://github.com/Timiochukwu/real-time-dashboard.git
+cd real-time-dashboard
 ```
 
 2. Install dependencies:
@@ -41,36 +64,35 @@ npm install
 ```
 
 3. Set up environment variables:
-   - Create a `.env` file in the backend directory
-   - Create a `.env` file in the frontend directory
-   - Add necessary environment variables (see Environment Variables section)
 
-## ⚙️ Environment Variables
-
-### Backend (.env)
+Create `.env` in the backend directory:
 ```
 PORT=5000
-MONGODB_URI=your_mongodb_uri
+MONGODB_URI=mongodb://localhost:27017/realtime-dashboard
 JWT_SECRET=your_jwt_secret
+REDIS_URL=redis://localhost:6379
 ```
 
-### Frontend (.env)
+Create `.env` in the frontend directory:
 ```
-REACT_APP_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
 ```
 
 ## 🚀 Running the Application
 
-1. Start the backend server:
+1. Start MongoDB and Redis services
+
+2. Start the backend server:
 ```bash
 cd backend
 npm run dev
 ```
 
-2. Start the frontend development server:
+3. Start the frontend development server:
 ```bash
 cd frontend
-npm start
+npm run dev
 ```
 
 The application will be available at:
@@ -81,10 +103,24 @@ The application will be available at:
 
 ```
 realtime-dashboard/
-├── frontend/           # React frontend application
-├── backend/           # Node.js backend server
-├── package.json       # Root package.json
-└── README.md         # Project documentation
+├── frontend/                # Next.js frontend application
+│   ├── src/
+│   │   ├── app/            # Next.js app directory
+│   │   ├── components/     # React components
+│   │   ├── context/        # React context providers
+│   │   ├── lib/           # Utility functions and API clients
+│   │   └── types/         # TypeScript type definitions
+│   └── public/            # Static assets
+├── backend/                # Node.js backend server
+│   ├── src/
+│   │   ├── controllers/   # Route controllers
+│   │   ├── middleware/    # Custom middleware
+│   │   ├── models/        # Mongoose models
+│   │   ├── routes/        # API routes
+│   │   ├── services/      # Business logic
+│   │   └── scripts/       # Utility scripts
+│   └── dist/             # Compiled TypeScript files
+└── package.json          # Root package.json
 ```
 
 ## 🛠️ Development
@@ -94,16 +130,22 @@ realtime-dashboard/
 - RESTful API architecture
 - MongoDB database integration
 - WebSocket support for real-time updates
+- Redis caching for improved performance
+- JWT-based authentication
+- Request validation with Joi
 
 ### Frontend Development
-- React-based user interface
-- Real-time data visualization
+- Next.js 14 with App Router
+- TypeScript for type safety
+- Tailwind CSS for styling
+- Real-time updates with Socket.IO
 - Responsive design
 - Component-based architecture
+- Context API for state management
 
 ## 📝 API Documentation
 
-API documentation will be available in future updates. For now, please refer to the source code in the `backend/src` directory for endpoint details.
+API documentation will be available in future updates. For now, please refer to the source code in the `backend/src/routes` directory for endpoint details.
 
 ## 🤝 Contributing
 
